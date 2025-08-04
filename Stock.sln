@@ -12,6 +12,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock.Domain", "Src\Stock.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock.Application", "Src\Stock.Application\Stock.Application.csproj", "{810A4EEC-89BA-4780-ADC7-34AB9DB146C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock.Infrastructure.Pg.Ef", "Src\Stock.Infrastructure.Pg.Ef\Stock.Infrastructure.Pg.Ef.csproj", "{07F39868-F162-41F4-ACF8-6894C0298C6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock.Api", "Src\Stock.Api\Stock.Api.csproj", "{0903D0F4-C9CE-4325-8D9B-377DAE707F0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8414F1F8-8416-4865-B0AF-53A70B3758E8}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yaml = docker-compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock.Validations.FluentValidation", "Src\Stock.Validations.FluentValidation\Stock.Validations.FluentValidation.csproj", "{DD35F746-063F-4BEB-830F-97028625C150}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +45,18 @@ Global
 		{810A4EEC-89BA-4780-ADC7-34AB9DB146C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{810A4EEC-89BA-4780-ADC7-34AB9DB146C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{810A4EEC-89BA-4780-ADC7-34AB9DB146C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07F39868-F162-41F4-ACF8-6894C0298C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07F39868-F162-41F4-ACF8-6894C0298C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07F39868-F162-41F4-ACF8-6894C0298C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F39868-F162-41F4-ACF8-6894C0298C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0903D0F4-C9CE-4325-8D9B-377DAE707F0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0903D0F4-C9CE-4325-8D9B-377DAE707F0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0903D0F4-C9CE-4325-8D9B-377DAE707F0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0903D0F4-C9CE-4325-8D9B-377DAE707F0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD35F746-063F-4BEB-830F-97028625C150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD35F746-063F-4BEB-830F-97028625C150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD35F746-063F-4BEB-830F-97028625C150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD35F746-063F-4BEB-830F-97028625C150}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CDF430C0-96E1-4236-BC1E-DE954593CF7A} = {5C2635D0-331E-4256-A1BC-83DA83300C2C}
@@ -41,5 +64,8 @@ Global
 		{802E7D48-3EE8-4A15-BA9C-03867315BBB8} = {CDF430C0-96E1-4236-BC1E-DE954593CF7A}
 		{F05AE456-E115-40EC-A67E-91586B6973C5} = {5C2635D0-331E-4256-A1BC-83DA83300C2C}
 		{810A4EEC-89BA-4780-ADC7-34AB9DB146C5} = {5C2635D0-331E-4256-A1BC-83DA83300C2C}
+		{07F39868-F162-41F4-ACF8-6894C0298C6F} = {5C2635D0-331E-4256-A1BC-83DA83300C2C}
+		{0903D0F4-C9CE-4325-8D9B-377DAE707F0C} = {5C2635D0-331E-4256-A1BC-83DA83300C2C}
+		{DD35F746-063F-4BEB-830F-97028625C150} = {5C2635D0-331E-4256-A1BC-83DA83300C2C}
 	EndGlobalSection
 EndGlobal
