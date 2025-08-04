@@ -1,5 +1,5 @@
 using Stock.Application;
-using Stock.Validations.FluentValidation;
+using Stock.Application.Validators.FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 

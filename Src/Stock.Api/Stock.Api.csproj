@@ -19,7 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Stock.Application\Stock.Application.csproj" />
-      <ProjectReference Include="..\Stock.Validations.FluentValidation\Stock.Validations.FluentValidation.csproj" />
+      <ProjectReference Include="..\Stock.Application.Validators.FluentValidation\Stock.Application.Validators.FluentValidation.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 using FluentValidation;
 using Framework.Application.Validation;
 
-namespace Stock.Validations.FluentValidation;
+namespace Stock.Application.Validators.FluentValidation;
 
 public class RequestValidator<TRequest>
     : AbstractValidator<TRequest>, IRequestValidator<TRequest>

@@ -2,7 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Stock.Validations.FluentValidation;
+namespace Stock.Application.Validators.FluentValidation;
 
 public static class ValidatorInstaller
 {
