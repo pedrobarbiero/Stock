@@ -3,7 +3,6 @@ using Stock.Validations.FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 builder.Services.InstallValidators();
 builder.Services.InstallApplicationServices();
@@ -18,4 +17,5 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.MapControllers();
 app.Run();

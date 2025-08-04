@@ -8,11 +8,17 @@ namespace Stock.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class SupplierController : ControllerBase
+public class SuppliersController : ControllerBase
 {
     [HttpPost]
     public Task<RequestResult<SupplierResponse>> Create(
         [FromServices] ISupplierService supplierService,
         [FromBody] CreateSupplierRequest request)
         => supplierService.CreateAsync(request);
+
+    [HttpGet]
+    public ActionResult Get()
+    {
+        return Ok("success");
+    }
 }
