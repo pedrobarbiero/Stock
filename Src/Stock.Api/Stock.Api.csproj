@@ -18,8 +18,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Stock.Application.Mappers.Mapperly\Stock.Application.Mappers.Mapperly.csproj" />
       <ProjectReference Include="..\Stock.Application\Stock.Application.csproj" />
       <ProjectReference Include="..\Stock.Application.Validators.FluentValidation\Stock.Application.Validators.FluentValidation.csproj" />
+      <ProjectReference Include="..\Stock.Infrastructure.Pg.Ef\Stock.Infrastructure.Pg.Ef.csproj" />
     </ItemGroup>
 
 </Project>
