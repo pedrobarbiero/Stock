@@ -17,9 +17,17 @@ public class RequestResult<T>
         IsValid = true;
     }
 
+    private RequestResult(ValidationResult validationResult, T? data)
+    {
+        IsValid = validationResult.IsValid;
+        Errors = validationResult.Errors;
+        Data = data;
+    }
+
     public T? Data { get; }
     public bool IsValid { get; }
     public IDictionary<string, string[]> Errors { get; }
     public static RequestResult<T> Success(T data) => new(data);
     public static RequestResult<T> Failure(ValidationResult validationResult) => new(validationResult.Errors);
+    public static RequestResult<T> NotFound(Guid id) => new(new NotFoundValidationResult<T>(id), default);
 }

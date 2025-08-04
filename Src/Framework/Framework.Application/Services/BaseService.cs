@@ -67,7 +67,7 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
         //Todo: handle cancellation token
         var existingAggregateRoot = await readRepository.GetByIdAsync(request.Id, CancellationToken.None);
         if (existingAggregateRoot is null)
-            return RequestResult<TResponse>.Failure(new NotFoundValidationResult<TAggregateRoot>(request.Id));
+            return RequestResult<TResponse>.NotFound(request.Id);
 
         var aggregateRoot = UpdateDomain(request, existingAggregateRoot);
         var updated = updateRepository.Update(aggregateRoot);
