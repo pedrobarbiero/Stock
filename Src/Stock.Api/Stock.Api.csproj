@@ -17,4 +17,9 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Stock.Application\Stock.Application.csproj" />
+      <ProjectReference Include="..\Stock.Validations.FluentValidation\Stock.Validations.FluentValidation.csproj" />
+    </ItemGroup>
+
 </Project>

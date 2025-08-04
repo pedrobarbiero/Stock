@@ -3,13 +3,13 @@ using Framework.Application.Validation;
 
 namespace Stock.Validations.FluentValidation;
 
-public class RequestValidator<TUseCase>
-    : AbstractValidator<TUseCase>, IRequestValidator<TUseCase>
-    where TUseCase : class
+public class RequestValidator<TRequest>
+    : AbstractValidator<TRequest>, IRequestValidator<TRequest>
+    where TRequest : class
 {
-    public async Task<ValidationResult> ValidateAsync(TUseCase useCase)
+    public async Task<ValidationResult> ValidateAsync(TRequest request)
     {
-        var result = await base.ValidateAsync(useCase);
+        var result = await base.ValidateAsync(request);
 
         if (result.IsValid)
             return ValidationResult.Success();

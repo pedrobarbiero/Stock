@@ -8,10 +8,10 @@
 
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="12.0.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Framework\Framework.Application\Framework.Application.csproj" />
       <ProjectReference Include="..\Stock.Application\Stock.Application.csproj" />
     </ItemGroup>
 

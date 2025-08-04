@@ -1,6 +1,6 @@
 namespace Framework.Application.Validation;
 
-public interface IRequestValidator<in TUseCase>
+public interface IRequestValidator<in TRequest>
 {
-    Task<ValidationResult> ValidateAsync(TUseCase useCase);
+    Task<ValidationResult> ValidateAsync(TRequest request);
 }

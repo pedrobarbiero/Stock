@@ -13,7 +13,7 @@ public class RequestResult<T>
     private RequestResult(T data)
     {
         Data = data;
-        Errors = [];
+        Errors = new Dictionary<string, string[]>();
         IsValid = true;
     }
 
