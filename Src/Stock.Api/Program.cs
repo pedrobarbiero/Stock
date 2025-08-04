@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Stock.Application;
 using Stock.Application.Mappers.Mapperly;
 using Stock.Application.Validators.FluentValidation;
@@ -19,6 +20,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<StockDbContext>();
+    dbContext.Database.Migrate();
 }
 
 app.MapControllers();
