@@ -29,5 +29,7 @@ public class RequestResult<T>
     public IDictionary<string, string[]> Errors { get; }
     public static RequestResult<T> Success(T data) => new(data);
     public static RequestResult<T> Failure(ValidationResult validationResult) => new(validationResult.Errors);
-    public static RequestResult<T> NotFound(Guid id) => new(new NotFoundValidationResult<T>(id), default);
+
+    public static RequestResult<T> NotFound(string className, Guid id) =>
+        new(new NotFoundValidationResult(className, id), default);
 }

@@ -10,7 +10,9 @@ internal static class SupplierRepositoryInstaller
     internal static IServiceCollection InstallSupplier(this IServiceCollection services)
     {
         services.AddScoped<ISupplierRepository, SupplierRepository>();
+        services.AddScoped<IReadRepository<Supplier>, SupplierRepository>();
         services.AddScoped<ICreateRepository<Supplier>, SupplierRepository>();
+        services.AddScoped<IUpdateRepository<Supplier>, SupplierRepository>();
         return services;
     }
 }

@@ -17,5 +17,5 @@ public class ValidationResult
     public static ValidationResult Failure(IDictionary<string, string[]> errors) => new(false, errors);
 }
 
-public class NotFoundValidationResult<T>(Guid id) : ValidationResult(false,
-    new Dictionary<string, string[]> { { "NotFound", [$"{typeof(T).Name} not found.", id.ToString()] } });
+public class NotFoundValidationResult(string className, Guid id) : ValidationResult(false,
+    new Dictionary<string, string[]> { { "NotFound", [$"{className} not found.", id.ToString()] } });

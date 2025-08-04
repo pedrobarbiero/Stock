@@ -21,4 +21,10 @@ public class SuppliersController : ControllerBase
     {
         return Ok("success");
     }
+    
+    [HttpPut]
+    public Task<RequestResult<SupplierResponse>> Update(
+        [FromServices] ISupplierService supplierService,
+        [FromBody] UpdateSupplierRequest request)
+        => supplierService.UpdateAsync(request);
 }
