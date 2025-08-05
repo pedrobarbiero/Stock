@@ -31,12 +31,12 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
 
         var validationResult = await ValidateAsync(request);
         if (!validationResult.IsValid)
-            return RequestResult<TResponse>.Failure(validationResult);
+            return RequestResult<TResponse>.BadRequest(validationResult);
 
         var aggregateRoot = ToDomain(request);
         var added = createRepository.Add(aggregateRoot);
 
-        return RequestResult<TResponse>.Success(ToResponse(added));
+        return RequestResult<TResponse>.Created(ToResponse(added));
     }
 
     protected virtual Task<ValidationResult> ValidateAsync(TCreateRequest request)
@@ -62,7 +62,7 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
 
         var validationResult = await ValidateAsync(request);
         if (!validationResult.IsValid)
-            return RequestResult<TResponse>.Failure(validationResult);
+            return RequestResult<TResponse>.BadRequest(validationResult);
 
         //Todo: handle cancellation token
         var existingAggregateRoot = await readRepository.GetByIdAsync(request.Id, CancellationToken.None);
@@ -72,7 +72,7 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
         var aggregateRoot = UpdateDomain(request, existingAggregateRoot);
         var updated = updateRepository.Update(aggregateRoot);
 
-        return RequestResult<TResponse>.Success(ToResponse(updated));
+        return RequestResult<TResponse>.Ok(ToResponse(updated));
     }
 
     protected virtual Task<ValidationResult> ValidateAsync(TUpdateRequest request)
@@ -97,15 +97,15 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
         //todo: handle cancellation token
         var existing = await readRepository.GetByIdAsync(id, CancellationToken.None);
         if (existing is null)
-            return RequestResult<bool>.Failure(new NotFoundValidationResult(typeof(TAggregateRoot).Name, id));
+            return RequestResult<bool>.NotFound(typeof(TAggregateRoot).Name, id);
 
         var validationResult = await ValidateDeletionAsync(id);
         if (!validationResult.IsValid)
-            return RequestResult<bool>.Failure(validationResult);
+            return RequestResult<bool>.BadRequest(validationResult);
 
         deleteRepository.Delete(existing);
 
-        return RequestResult<bool>.Success(true);
+        return RequestResult<bool>.NoContent();
     }
 
     protected virtual Task<ValidationResult> ValidateDeletionAsync(Guid id) =>
