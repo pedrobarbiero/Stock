@@ -6,6 +6,7 @@ namespace Stock.Api.GraphQL.Customers;
 [ExtendObjectType("Query")]
 public class CustomerQueries
 {
+    [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]

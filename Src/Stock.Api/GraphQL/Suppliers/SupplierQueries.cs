@@ -6,6 +6,7 @@ namespace Stock.Api.GraphQL.Suppliers;
 [ExtendObjectType("Query")]
 public class SupplierQueries
 {
+    [UsePaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
