@@ -2,12 +2,11 @@ namespace Framework.Application.Validation;
 
 public class ValidationResult
 {
-    protected ValidationResult(bool isValid, IDictionary<string, string[]>? errors = null)
+    private ValidationResult(bool isValid, IDictionary<string, string[]>? errors = null)
     {
         IsValid = isValid;
         Errors = errors ?? new Dictionary<string, string[]>();
     }
-
 
     public bool IsValid { get; protected init; }
     public IDictionary<string, string[]> Errors { get; protected init; }
