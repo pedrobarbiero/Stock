@@ -15,6 +15,7 @@ public static class GraphQLInstaller
             .AddMutationType(d => d.Name("Mutation"))
             .AddTypeExtension<SupplierMutations>()
             .AddTypeExtension<CustomerMutations>()
+            .BindRuntimeType<ushort, IntType>()
             .AddProjections()
             .AddFiltering()
             .AddSorting();

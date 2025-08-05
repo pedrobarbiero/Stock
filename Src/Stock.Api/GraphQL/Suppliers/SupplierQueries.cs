@@ -1,6 +1,4 @@
-using Stock.Application.Features.Suppliers.Repositories;
-using Stock.Application.Mappers.Mapperly.Domain.Suppliers;
-using Stock.Application.Features.Suppliers.Responses;
+using Microsoft.EntityFrameworkCore;
 using Stock.Infrastructure.Pg.Ef;
 using Stock.Domain.Models.Suppliers;
 
@@ -15,12 +13,8 @@ public class SupplierQueries
     public IQueryable<Supplier> GetSuppliers([Service] StockDbContext context) =>
         context.Suppliers;
 
-    public async Task<SupplierResponse?> GetSupplierById(
+    public Task<Supplier?> GetSupplierById(
         Guid id,
-        [Service] ISupplierRepository supplierRepository,
-        [Service] CreateSupplierMapper mapper)
-    {
-        var supplier = await supplierRepository.GetByIdAsync(id, CancellationToken.None);
-        return supplier != null ? mapper.ToResponse(supplier) : null;
-    }
+        [Service] StockDbContext context)
+        => context.Suppliers.SingleOrDefaultAsync(s => s.Id == id);
 }

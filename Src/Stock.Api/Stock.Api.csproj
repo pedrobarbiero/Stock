@@ -8,27 +8,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="HotChocolate.AspNetCore" />
-        <PackageReference Include="HotChocolate.Data.EntityFramework" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
-        <PackageReference Include="Microsoft.AspNetCore.OData" />
+        <PackageReference Include="HotChocolate.AspNetCore"/>
+        <PackageReference Include="HotChocolate.Data.EntityFramework"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+        <PackageReference Include="Microsoft.AspNetCore.OData"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Stock.Application.Mappers.Mapperly\Stock.Application.Mappers.Mapperly.csproj" />
-      <ProjectReference Include="..\Stock.Application\Stock.Application.csproj" />
-      <ProjectReference Include="..\Stock.Application.Validators.FluentValidation\Stock.Application.Validators.FluentValidation.csproj" />
-      <ProjectReference Include="..\Stock.Infrastructure.Pg.Ef\Stock.Infrastructure.Pg.Ef.csproj" />
+        <ProjectReference Include="..\Stock.Application.Mappers.Mapperly\Stock.Application.Mappers.Mapperly.csproj"/>
+        <ProjectReference Include="..\Stock.Application\Stock.Application.csproj"/>
+        <ProjectReference Include="..\Stock.Application.Validators.FluentValidation\Stock.Application.Validators.FluentValidation.csproj"/>
+        <ProjectReference Include="..\Stock.Infrastructure.Pg.Ef\Stock.Infrastructure.Pg.Ef.csproj"/>
     </ItemGroup>
-
+    
 </Project>
