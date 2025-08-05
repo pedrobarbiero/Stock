@@ -61,3 +61,5 @@ nunit-*.xml
 
 *.DotSettings
 *.DotSettings.user
+
+.DS_Store
