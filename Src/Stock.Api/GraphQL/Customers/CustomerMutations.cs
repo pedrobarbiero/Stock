@@ -10,20 +10,21 @@ public class CustomerMutations
 {
     public Task<RequestResult<CustomerResponse>> CreateCustomer(
         CreateCustomerRequest input,
-        [Service] ICustomerService customerService)
-    {
-        return customerService.CreateAsync(input, CancellationToken.None);
-    }
+        [Service] ICustomerService customerService,
+        CancellationToken cancellationToken)
+        => customerService.CreateAsync(input, cancellationToken);
+
 
     public Task<RequestResult<CustomerResponse>> UpdateCustomer(
         UpdateCustomerRequest input,
-        [Service] ICustomerService customerService)
-    {
-        return customerService.UpdateAsync(input, CancellationToken.None);
-    }
+        [Service] ICustomerService customerService,
+        CancellationToken cancellationToken)
+        => customerService.UpdateAsync(input, cancellationToken);
+
 
     public Task<RequestResult<bool>> DeleteCustomer(
         Guid id,
-        [Service] ICustomerService customerService)
-        => customerService.DeleteAsync(id, CancellationToken.None);
+        [Service] ICustomerService customerService,
+        CancellationToken cancellationToken)
+        => customerService.DeleteAsync(id, cancellationToken);
 }

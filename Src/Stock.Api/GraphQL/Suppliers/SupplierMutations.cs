@@ -10,18 +10,21 @@ public class SupplierMutations
 {
     public Task<RequestResult<SupplierResponse>> CreateSupplier(
         CreateSupplierRequest input,
-        [Service] ISupplierService supplierService)
-        => supplierService.CreateAsync(input, CancellationToken.None);
+        [Service] ISupplierService supplierService,
+        CancellationToken cancellationToken)
+        => supplierService.CreateAsync(input, cancellationToken);
 
     public Task<RequestResult<SupplierResponse>> UpdateSupplier(
         Guid id,
         UpdateSupplierRequest input,
-        [Service] ISupplierService supplierService)
-        => supplierService.UpdateAsync(input, CancellationToken.None);
+        [Service] ISupplierService supplierService,
+        CancellationToken cancellationToken)
+        => supplierService.UpdateAsync(input, cancellationToken);
 
 
     public Task<RequestResult<bool>> DeleteSupplier(
         Guid id,
-        [Service] ISupplierService supplierService)
-        => supplierService.DeleteAsync(id, CancellationToken.None);
+        [Service] ISupplierService supplierService,
+        CancellationToken cancellationToken)
+        => supplierService.DeleteAsync(id, cancellationToken);
 }

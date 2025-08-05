@@ -15,6 +15,7 @@ public class SupplierQueries
 
     public Task<Supplier?> GetSupplierById(
         Guid id,
-        [Service] StockDbContext context)
-        => context.Suppliers.SingleOrDefaultAsync(s => s.Id == id);
+        [Service] StockDbContext context,
+        CancellationToken cancellationToken)
+        => context.Suppliers.SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
 }

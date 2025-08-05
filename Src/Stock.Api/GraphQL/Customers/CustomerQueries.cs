@@ -18,9 +18,10 @@ public class CustomerQueries
     public async Task<CustomerResponse?> GetCustomerById(
         Guid id,
         [Service] ICustomerRepository customerRepository,
-        [Service] CreateCustomerMapper mapper)
+        [Service] CreateCustomerMapper mapper,
+        CancellationToken cancellationToken)
     {
-        var customer = await customerRepository.GetByIdAsync(id, CancellationToken.None);
+        var customer = await customerRepository.GetByIdAsync(id, cancellationToken);
         return customer != null ? mapper.ToResponse(customer) : null;
     }
 }
