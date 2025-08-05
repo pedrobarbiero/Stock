@@ -11,9 +11,11 @@ public abstract class BaseRepository<T>(StockDbContext context) :
     IDeleteRepository<T>
     where T : AggregateRoot
 {
-    private readonly DbSet<T> _dbSet = context.Set<T>();
+    protected readonly DbSet<T> DbSet = context.Set<T>();
 
-    public virtual T Add(T aggregateRoot) => _dbSet.Add(aggregateRoot).Entity;
+    protected virtual IQueryable<T> DbSetWithIncludes() => DbSet;
+
+    public virtual T Add(T aggregateRoot) => DbSet.Add(aggregateRoot).Entity;
 
     public virtual async Task<bool> DeleteAsync(Guid id,
         CancellationToken cancellationToken)
@@ -28,30 +30,30 @@ public abstract class BaseRepository<T>(StockDbContext context) :
 
     public virtual Task<T?> GetByIdAsync(Guid id,
         CancellationToken cancellationToken)
-        => _dbSet.SingleOrDefaultAsync(t => t.Id == id, cancellationToken);
+        => DbSetWithIncludes().SingleOrDefaultAsync(t => t.Id == id, cancellationToken);
 
     public async Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
-        => await _dbSet.Where(t => ids.Contains(t.Id)).ToListAsync(cancellationToken);
+        => await DbSetWithIncludes().Where(t => ids.Contains(t.Id)).ToListAsync(cancellationToken);
 
 
     public void Delete(T entity)
     {
         ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
-        _dbSet.Remove(entity);
+        DbSet.Remove(entity);
     }
 
     public virtual Task<bool> ExistsAsync(Guid id,
         CancellationToken cancellationToken) =>
-        _dbSet.AnyAsync(t => t.Id == id, cancellationToken);
+        DbSet.AnyAsync(t => t.Id == id, cancellationToken);
 
     public async Task<bool> ExistsAllAsync(IEnumerable<Guid> ids,
         CancellationToken cancellationToken)
     {
         List<Guid> distinctIds = ids.Distinct().ToList();
-        int count = await _dbSet.Where(t => distinctIds.Contains(t.Id)).CountAsync(cancellationToken);
+        int count = await DbSet.Where(t => distinctIds.Contains(t.Id)).CountAsync(cancellationToken);
         return count == distinctIds.Count;
     }
 
-    public virtual T Update(T aggregateRoot) => _dbSet.Update(aggregateRoot).Entity;
+    public virtual T Update(T aggregateRoot) => DbSet.Update(aggregateRoot).Entity;
 }

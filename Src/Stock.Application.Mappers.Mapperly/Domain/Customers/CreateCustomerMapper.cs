@@ -12,8 +12,12 @@ public partial class CreateCustomerMapper : IMapper<Customer, CustomerResponse, 
     public partial CustomerResponse ToResponse(Customer aggregateRoot);
 
     [MapperIgnoreTarget(nameof(Customer.Id))]
-    [MapperIgnoreTarget(nameof(Customer.Addresses))]
     public partial Customer ToDomain(CreateCustomerRequest request);
 
+    [MapperIgnoreSource(nameof(CustomerAddress.CustomerId))]
     private partial CustomerAddressResponse ToCustomerAddressResponse(CustomerAddress address);
+
+    [MapperIgnoreTarget(nameof(CustomerAddress.Id))]
+    [MapperIgnoreTarget(nameof(CustomerAddress.CustomerId))]
+    private partial CustomerAddress ToCustomerAddress(CustomerAddressRequest request);
 }
