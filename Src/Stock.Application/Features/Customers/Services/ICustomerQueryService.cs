@@ -5,5 +5,5 @@ namespace Stock.Application.Features.Customers.Services;
 public interface ICustomerQueryService
 {
     IQueryable<CustomerQueryResult> GetCustomers();
-    IQueryable<CustomerQueryResult> GetCustomerById(Guid id);
+    Task<CustomerQueryResult?> GetCustomerById(Guid id, CancellationToken cancellationToken);
 }

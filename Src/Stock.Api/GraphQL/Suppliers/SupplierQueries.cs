@@ -1,6 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using Stock.Infrastructure.Pg.Ef;
-using Stock.Domain.Models.Suppliers;
+using Stock.Application.Features.Suppliers.QueryResults;
+using Stock.Application.Features.Suppliers.Services;
 
 namespace Stock.Api.GraphQL.Suppliers;
 
@@ -10,12 +9,12 @@ public class SupplierQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Supplier> GetSuppliers([Service] StockDbContext context) =>
-        context.Suppliers;
+    public IQueryable<SupplierQueryResult> GetSuppliers([Service] ISupplierQueryService queryService) =>
+        queryService.GetSuppliers();
 
-    public Task<Supplier?> GetSupplierById(
+    public Task<SupplierQueryResult?> GetSupplierById(
         Guid id,
-        [Service] StockDbContext context,
+        [Service] ISupplierQueryService queryService,
         CancellationToken cancellationToken)
-        => context.Suppliers.SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
+        => queryService.GetSupplierById(id, cancellationToken);
 }

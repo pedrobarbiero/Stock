@@ -12,8 +12,9 @@ public class CustomerQueries
     public IQueryable<CustomerQueryResult> GetCustomers([Service] ICustomerQueryService customerQueryService) =>
         customerQueryService.GetCustomers();
 
-    public IQueryable<CustomerQueryResult> GetCustomerById(
+    public Task<CustomerQueryResult?> GetCustomerById(
         Guid id,
+        CancellationToken cancellationToken,
         [Service] ICustomerQueryService customerQueryService)
-        => customerQueryService.GetCustomerById(id);
+        => customerQueryService.GetCustomerById(id, cancellationToken);
 }

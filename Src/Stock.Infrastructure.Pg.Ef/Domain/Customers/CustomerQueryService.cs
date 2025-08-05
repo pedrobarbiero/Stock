@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Stock.Application.Features.Customers.QueryResults;
 using Stock.Application.Features.Customers.Services;
 
@@ -22,5 +23,6 @@ public class CustomerQueryService(StockDbContext context) : ICustomerQueryServic
 
     public IQueryable<CustomerQueryResult> GetCustomers() => BaseQuery;
 
-    public IQueryable<CustomerQueryResult> GetCustomerById(Guid id) => BaseQuery.Where(c => c.Id == id);
+    public Task<CustomerQueryResult?> GetCustomerById(Guid id, CancellationToken cancellationToken) =>
+        BaseQuery.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 }
