@@ -1,8 +1,5 @@
-using Stock.Application.Features.Customers.Repositories;
-using Stock.Application.Mappers.Mapperly.Domain.Customers;
-using Stock.Application.Features.Customers.Responses;
-using Stock.Infrastructure.Pg.Ef;
-using Stock.Domain.Models.Customers;
+using Stock.Application.Features.Customers.QueryResults;
+using Stock.Application.Features.Customers.Services;
 
 namespace Stock.Api.GraphQL.Customers;
 
@@ -12,16 +9,11 @@ public class CustomerQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Customer> GetCustomers([Service] StockDbContext context) =>
-        context.Customers;
+    public IQueryable<CustomerQueryResult> GetCustomers([Service] ICustomerQueryService customerQueryService) =>
+        customerQueryService.GetCustomers();
 
-    public async Task<CustomerResponse?> GetCustomerById(
+    public IQueryable<CustomerQueryResult> GetCustomerById(
         Guid id,
-        [Service] ICustomerRepository customerRepository,
-        [Service] CreateCustomerMapper mapper,
-        CancellationToken cancellationToken)
-    {
-        var customer = await customerRepository.GetByIdAsync(id, cancellationToken);
-        return customer != null ? mapper.ToResponse(customer) : null;
-    }
+        [Service] ICustomerQueryService customerQueryService)
+        => customerQueryService.GetCustomerById(id);
 }
