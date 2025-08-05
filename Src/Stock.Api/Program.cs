@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Stock.Api.Middleware;
 using Stock.Application;
 using Stock.Application.Mappers.Mapperly;
 using Stock.Application.Validators.FluentValidation;
@@ -26,5 +27,6 @@ if (app.Environment.IsDevelopment())
     dbContext.Database.Migrate();
 }
 
+app.UseMiddleware<RequestResultMiddleware>();
 app.MapControllers();
 app.Run();
