@@ -1,3 +1,4 @@
+using Framework.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,12 +10,13 @@ public static class EfInstaller
 {
     public static IServiceCollection InstallRepositories(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<StockDbContext>((sp, options) =>
+        services.AddDbContext<StockDbContext>(options =>
         {
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(StockDbContext).Assembly.FullName));
         });
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.InstallSupplier();
         return services;

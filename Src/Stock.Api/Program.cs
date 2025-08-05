@@ -28,5 +28,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<RequestResultMiddleware>();
+app.UseMiddleware<AutoSaveChangesMiddleware>();
 app.MapControllers();
 app.Run();
