@@ -21,8 +21,11 @@ public class RequestResultMiddleware(RequestDelegate next)
             context.Response.StatusCode = statusCode;
         }
 
-        memoryStream.Seek(0, SeekOrigin.Begin);
-        await memoryStream.CopyToAsync(originalBodyStream);
+        if (context.Response.StatusCode != 204)
+        {
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            await memoryStream.CopyToAsync(originalBodyStream);
+        }
     }
 
     private static bool TryExtractStatusCode(string responseBody, out int statusCode)

@@ -17,15 +17,15 @@ public class SuppliersController : ControllerBase
         CancellationToken cancellationToken)
         => supplierService.CreateAsync(request, cancellationToken);
 
-    [HttpGet]
-    public ActionResult Get()
-    {
-        return Ok("success");
-    }
-
     [HttpPut]
     public Task<RequestResult<SupplierResponse>> Update(
         [FromServices] ISupplierService supplierService,
         [FromBody] UpdateSupplierRequest request, CancellationToken cancellationToken)
         => supplierService.UpdateAsync(request, cancellationToken);
+
+    [HttpDelete("{id:guid}")]
+    public Task<RequestResult<bool>> Delete(
+        [FromServices] ISupplierService supplierService,
+        [FromRoute] Guid id, CancellationToken cancellationToken)
+        => supplierService.DeleteAsync(id, cancellationToken);
 }

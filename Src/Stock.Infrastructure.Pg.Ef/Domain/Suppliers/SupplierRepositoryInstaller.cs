@@ -13,6 +13,7 @@ internal static class SupplierRepositoryInstaller
         services.AddScoped<IReadRepository<Supplier>, SupplierRepository>();
         services.AddScoped<ICreateRepository<Supplier>, SupplierRepository>();
         services.AddScoped<IUpdateRepository<Supplier>, SupplierRepository>();
+        services.AddScoped<IDeleteRepository<Supplier>, SupplierRepository>();
         return services;
     }
 }
