@@ -11,6 +11,7 @@ internal static class CustomerMapperInstaller
     internal static IServiceCollection InstallCustomer(this IServiceCollection services)
     {
         services.AddScoped<IMapper<Customer, CustomerResponse, CreateCustomerRequest>, CreateCustomerMapper>();
+        services.AddScoped<IMapper<Customer, CustomerResponse, UpdateCustomerRequest>, UpdateCustomerMapper>();
         return services;
     }
 }
