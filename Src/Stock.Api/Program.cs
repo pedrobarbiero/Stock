@@ -25,7 +25,7 @@ builder.Services.InstallRepositories(builder.Configuration);
 builder.Services.InstallValidators();
 builder.Services.InstallMappers();
 builder.Services.InstallApplicationServices();
-builder.Services.InstallGraphQL();
+builder.Services.InstallGraphQl();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton(TimeProvider.System);

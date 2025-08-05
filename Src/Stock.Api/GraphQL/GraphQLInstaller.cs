@@ -3,9 +3,9 @@ using Stock.Api.GraphQL.Customers;
 
 namespace Stock.Api.GraphQL;
 
-public static class GraphQLInstaller
+public static class GraphQlInstaller
 {
-    public static IServiceCollection InstallGraphQL(this IServiceCollection services)
+    public static IServiceCollection InstallGraphQl(this IServiceCollection services)
     {
         services
             .AddGraphQLServer()
