@@ -2,6 +2,7 @@ using Framework.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Stock.Infrastructure.Pg.Ef.Domain.Customers;
 using Stock.Infrastructure.Pg.Ef.Domain.Suppliers;
 
 namespace Stock.Infrastructure.Pg.Ef;
@@ -19,6 +20,7 @@ public static class EfInstaller
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.InstallSupplier();
+        services.InstallCustomer();
         return services;
     }
 }

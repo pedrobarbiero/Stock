@@ -22,8 +22,6 @@ public class CustomerAddress : Entity
         init => _postalCode = value;
     }
 
-    public required Customer Customer { get; init; }
-
     private string? _street;
     private string? _city;
     private string? _postalCode;

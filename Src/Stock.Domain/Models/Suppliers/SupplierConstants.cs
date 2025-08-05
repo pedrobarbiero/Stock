@@ -1,4 +1,4 @@
-namespace Stock.Domain.Models.Constants;
+namespace Stock.Domain.Models.Suppliers;
 
 public static class SupplierConstants
 {
