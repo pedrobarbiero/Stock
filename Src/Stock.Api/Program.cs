@@ -6,6 +6,7 @@ using Stock.Api.Middleware;
 using Stock.Application;
 using Stock.Application.Mappers.Mapperly;
 using Stock.Application.Validators.FluentValidation;
+using Stock.Domain.Models.Customers;
 using Stock.Domain.Models.Suppliers;
 using Stock.Infrastructure.Pg.Ef;
 
@@ -45,6 +46,16 @@ app.Run();
 static IEdmModel GetEdmModel()
 {
     var builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Supplier>("SuppliersOData");
+    builder.EntitySet<Supplier>("Suppliers");
+
+    var customerEntitySet = builder.EntitySet<Customer>("Customers");
+    var customerEntity = customerEntitySet.EntityType;
+
+    var addressEntitySet = builder.EntitySet<CustomerAddress>("CustomerAddresses");
+    var addressEntity = addressEntitySet.EntityType;
+
+    // Explicitly configure the navigation property
+    customerEntity.HasMany(c => c.Addresses);
+
     return builder.GetEdmModel();
 }

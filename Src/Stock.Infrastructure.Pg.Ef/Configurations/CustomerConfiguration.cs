@@ -18,15 +18,10 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .IsRequired()
             .HasMaxLength(CustomerConstants.MaxEmailLength);
 
-        builder.OwnsMany(x => x.Addresses, a =>
-        {
-            a.ToTable("customer_addresses");
-            a.WithOwner().HasForeignKey("CustomerId");
-            a.HasKey(c => c.Id);
-            a.Property<Guid>("Id").HasValueGenerator<GuidV7ValueGenerator>();
-            a.Property(x => x.Street).HasMaxLength(300);
-            a.Property(x => x.City).HasMaxLength(100);
-            a.Property(x => x.PostalCode).HasMaxLength(20);
-        });
+        builder.HasMany(x => x.Addresses)
+            .WithOne()
+            .HasForeignKey(a => a.CustomerId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

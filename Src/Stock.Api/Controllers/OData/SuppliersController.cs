@@ -8,7 +8,7 @@ using Stock.Infrastructure.Pg.Ef;
 
 namespace Stock.Api.Controllers.OData;
 
-public class SuppliersODataController(StockDbContext context) : ODataController
+public class SuppliersController(StockDbContext context) : ODataController
 {
     [EnableQuery]
     [HttpGet]

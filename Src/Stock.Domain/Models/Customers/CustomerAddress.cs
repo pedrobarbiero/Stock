@@ -4,6 +4,8 @@ namespace Stock.Domain.Models.Customers;
 
 public class CustomerAddress : Entity
 {
+    public Guid CustomerId { get; init; }
+
     public string? Street
     {
         get => _street;
