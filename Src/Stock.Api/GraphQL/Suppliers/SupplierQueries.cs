@@ -4,9 +4,10 @@ using Stock.Application.Features.Suppliers.Responses;
 using Stock.Infrastructure.Pg.Ef;
 using Stock.Domain.Models.Suppliers;
 
-namespace Stock.Api.GraphQL;
+namespace Stock.Api.GraphQL.Suppliers;
 
-public class Query
+[ExtendObjectType("Query")]
+public class SupplierQueries
 {
     [UseProjection]
     [UseFiltering]

@@ -2,9 +2,10 @@ using Stock.Application.Features.Suppliers.Services;
 using Stock.Application.Features.Suppliers.Requests;
 using Stock.Application.Features.Suppliers.Responses;
 
-namespace Stock.Api.GraphQL;
+namespace Stock.Api.GraphQL.Suppliers;
 
-public class Mutation
+[ExtendObjectType("Mutation")]
+public class SupplierMutations
 {
     public async Task<SupplierResponse?> CreateSupplier(
         CreateSupplierRequest input,
@@ -16,12 +17,10 @@ public class Mutation
 
     public async Task<SupplierResponse?> UpdateSupplier(
         Guid id,
-        string name,
-        string email,
+        UpdateSupplierRequest input,
         [Service] ISupplierService supplierService)
     {
-        var updateRequest = new UpdateSupplierRequest { Id = id, Name = name, Email = email };
-        var result = await supplierService.UpdateAsync(updateRequest, CancellationToken.None);
+        var result = await supplierService.UpdateAsync(input, CancellationToken.None);
         return result.IsValid ? result.Data : null;
     }
 

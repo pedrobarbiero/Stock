@@ -21,18 +21,11 @@ builder.Services.AddControllers().AddOData(options => options
     .SetMaxTop(100)
     .AddRouteComponents("odata", GetEdmModel()));
 
-builder.Services
-    .AddGraphQLServer()
-    .AddQueryType<Query>()
-    .AddMutationType<Mutation>()
-    .AddProjections()
-    .AddFiltering()
-    .AddSorting();
-
 builder.Services.InstallRepositories(builder.Configuration);
 builder.Services.InstallValidators();
 builder.Services.InstallMappers();
 builder.Services.InstallApplicationServices();
+builder.Services.InstallGraphQL();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton(TimeProvider.System);

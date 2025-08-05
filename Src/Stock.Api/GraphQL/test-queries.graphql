@@ -1,0 +1,290 @@
+# Test GraphQL Queries and Mutations for Stock API
+# These can be used in GraphQL Playground or any GraphQL client
+
+# ============================================================================
+# CUSTOMER OPERATIONS WITH ADDRESSES
+# ============================================================================
+
+# Create Customer with Multiple Addresses
+mutation CreateCustomerWithAddresses {
+  createCustomer(input: {
+    name: "John Doe"
+    email: "john.doe@example.com"
+    addresses: [
+      {
+        street: "123 Main St"
+        city: "New York"
+        postalCode: "10001"
+      },
+      {
+        street: "456 Business Ave"
+        city: "New York"
+        postalCode: "10002"
+      }
+    ]
+  }) {
+    id
+    name
+    email
+    addresses {
+      id
+      street
+      city
+      postalCode
+    }
+  }
+}
+
+# Create Customer with Single Address
+mutation CreateCustomerSingleAddress {
+  createCustomer(input: {
+    name: "Jane Smith"
+    email: "jane.smith@example.com"
+    addresses: [
+      {
+        street: "789 Oak Street"
+        city: "Los Angeles"
+        postalCode: "90210"
+      }
+    ]
+  }) {
+    id 
+    name
+    email
+    addresses {
+      id
+      street
+      city
+      postalCode
+    }
+  }
+}
+
+# Create Customer with No Addresses
+mutation CreateCustomerNoAddress {
+  createCustomer(input: {
+    name: "Bob Johnson"
+    email: "bob.johnson@example.com"
+    addresses: []
+  }) {
+    id
+    name
+    email
+    addresses {
+      id
+      street
+      city
+      postalCode
+    }
+  }
+}
+
+# Update Customer with New Addresses
+mutation UpdateCustomerWithAddresses {
+  updateCustomer(input: {
+    id: "REPLACE_WITH_ACTUAL_ID"
+    name: "John Doe Updated"
+    email: "john.doe.updated@example.com"
+    addresses: [
+      {
+        street: "123 Updated Main St"
+        city: "Updated New York"
+        postalCode: "10001"
+      },
+      {
+        street: "789 New Business Ave"
+        city: "Updated New York"
+        postalCode: "10003"
+      }
+    ]
+  }) {
+    id
+    name
+    email
+    addresses {
+      id
+      street
+      city
+      postalCode
+    }
+  }
+}
+
+# ============================================================================
+# CUSTOMER QUERIES
+# ============================================================================
+
+# Get All Customers with Addresses
+query GetAllCustomers {
+  customers {
+    id
+    name
+    email
+    addresses {
+      id
+      street
+      city
+      postalCode
+    }
+  }
+}
+
+# Get Customer by ID
+query GetCustomerById {
+  customerById(id: "REPLACE_WITH_ACTUAL_ID") {
+    id
+    name
+    email
+    addresses {
+      id
+      street
+      city
+      postalCode
+    }
+  }
+}
+
+# Get Customers with Filtering by Name
+query GetCustomersByName {
+  customers(where: { name: { contains: "John" } }) {
+    id
+    name
+    email
+    addresses {
+      id
+      street
+      city
+      postalCode
+    }
+  }
+}
+
+# Get Customers with Sorting
+query GetCustomersSorted {
+  customers(order: [{ name: ASC }]) {
+    id
+    name
+    email
+    addresses(order: [{ city: ASC }, { street: ASC }]) {
+      id
+      street
+      city
+      postalCode
+    }
+  }
+}
+
+# ============================================================================
+# SUPPLIER OPERATIONS
+# ============================================================================
+
+# Create Supplier
+mutation CreateSupplier {
+  createSupplier(input: {
+    name: "Acme Corp"
+    email: "contact@acme.com"
+  }) {
+    id
+    name
+    email
+  }
+}
+
+# Update Supplier
+mutation UpdateSupplier {
+  updateSupplier(input: {
+    id: "REPLACE_WITH_ACTUAL_ID"
+    name: "Acme Corporation Updated"
+    email: "newcontact@acme.com"
+  }) {
+    id
+    name
+    email
+  }
+}
+
+# ============================================================================
+# SUPPLIER QUERIES
+# ============================================================================
+
+# Get All Suppliers
+query GetAllSuppliers {
+  suppliers {
+    id
+    name
+    email
+  }
+}
+
+# Get Supplier by ID
+query GetSupplierById {
+  supplierById(id: "REPLACE_WITH_ACTUAL_ID") {
+    id
+    name
+    email
+  }
+}
+
+# Get Suppliers with Filtering
+query GetSuppliersByName {
+  suppliers(where: { name: { contains: "Acme" } }) {
+    id
+    name
+    email
+  }
+}
+
+# ============================================================================
+# SCHEMA INTROSPECTION
+# ============================================================================
+
+# Get Schema Types (useful for exploring the API)
+query GetSchemaTypes {
+  __schema {
+    types {
+      name
+      kind
+      description
+    }
+  }
+}
+
+# Get Query Fields
+query GetQueryFields {
+  __type(name: "Query") {
+    fields {
+      name
+      type {
+        name
+        kind
+      }
+      args {
+        name
+        type {
+          name
+          kind
+        }
+      }
+    }
+  }
+}
+
+# Get Mutation Fields
+query GetMutationFields {
+  __type(name: "Mutation") {
+    fields {
+      name
+      type {
+        name
+        kind
+      }
+      args {
+        name
+        type {
+          name
+          kind
+        }
+      }
+    }
+  }
+}
