@@ -4,27 +4,11 @@ namespace Framework.Application.Requests;
 
 public class RequestResult<T>
 {
-    private RequestResult(IDictionary<string, string[]> errors, ushort statusCode)
+    private RequestResult(T? data, IDictionary<string, string[]> errors, bool isValid, ushort statusCode)
     {
-        IsValid = false;
+        Data = data;
         Errors = errors;
-        Data = default;
-        StatusCode = statusCode;
-    }
-
-    private RequestResult(T data, ushort statusCode)
-    {
-        Data = data;
-        Errors = new Dictionary<string, string[]>();
-        IsValid = true;
-        StatusCode = statusCode;
-    }
-
-    private RequestResult(ValidationResult validationResult, T? data, ushort statusCode)
-    {
-        IsValid = validationResult.IsValid;
-        Errors = validationResult.Errors;
-        Data = data;
+        IsValid = isValid;
         StatusCode = statusCode;
     }
 
@@ -32,11 +16,14 @@ public class RequestResult<T>
     public bool IsValid { get; }
     public ushort StatusCode { get; }
     public IDictionary<string, string[]> Errors { get; }
-    public static RequestResult<T> Ok(T data) => new(data, 200);
-    public static RequestResult<T> Created(T data) => new(data, 201);
-    public static RequestResult<T> NoContent() => new(default(T)!, 204);
-    public static RequestResult<T> BadRequest(ValidationResult validationResult) => new(validationResult.Errors, 400);
+    public static RequestResult<T> Ok(T data) => new(data, new Dictionary<string, string[]>(), true, 200);
+    public static RequestResult<T> Created(T data) => new(data, new Dictionary<string, string[]>(), true, 201);
+    public static RequestResult<T> NoContent() => new(default(T), new Dictionary<string, string[]>(), true, 204);
+
+    public static RequestResult<T> BadRequest(ValidationResult validationResult) =>
+        new(default, validationResult.Errors, false, 400);
 
     public static RequestResult<T> NotFound(string className, Guid id) =>
-        new(new NotFoundValidationResult(className, id), default, 404);
+        new(default, new Dictionary<string, string[]> { { "NotFound", [$"{className} not found.", id.ToString()] } },
+            false, 404);
 }
