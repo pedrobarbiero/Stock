@@ -1,18 +1,17 @@
 <Project>
-
     <PropertyGroup>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
-
     <ItemGroup>
-        <PackageVersion Include="FluentValidation" Version="12.0.0" />
-        <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-        <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7" />
-        <PackageVersion Include="Microsoft.AspNetCore.OData" Version="9.1.0" />
-        <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7" />
-        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
-        <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-        <PackageVersion Include="Riok.Mapperly" Version="4.3.0-next.3" />
+        <PackageVersion Include="FluentValidation" Version="12.0.0"/>
+        <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0"/>
+        <PackageVersion Include="HotChocolate.AspNetCore" Version="15.1.8"/>
+        <PackageVersion Include="HotChocolate.Data.EntityFramework" Version="15.1.8"/>
+        <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7"/>
+        <PackageVersion Include="Microsoft.AspNetCore.OData" Version="9.1.0"/>
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7"/>
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7"/>
+        <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
+        <PackageVersion Include="Riok.Mapperly" Version="4.3.0-next.3"/>
     </ItemGroup>
-
 </Project>

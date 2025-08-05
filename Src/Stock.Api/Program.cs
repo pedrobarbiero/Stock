@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using Stock.Api.GraphQL;
 using Stock.Api.Middleware;
 using Stock.Application;
 using Stock.Application.Mappers.Mapperly;
@@ -19,6 +20,15 @@ builder.Services.AddControllers().AddOData(options => options
     .Count()
     .SetMaxTop(100)
     .AddRouteComponents("odata", GetEdmModel()));
+
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
+    .AddProjections()
+    .AddFiltering()
+    .AddSorting();
+
 builder.Services.InstallRepositories(builder.Configuration);
 builder.Services.InstallValidators();
 builder.Services.InstallMappers();
@@ -41,6 +51,7 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<RequestResultMiddleware>();
 app.UseMiddleware<AutoSaveChangesMiddleware>();
 app.MapControllers();
+app.MapGraphQL();
 app.Run();
 
 static IEdmModel GetEdmModel()
