@@ -1,13 +1,23 @@
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Stock.Api.Middleware;
 using Stock.Application;
 using Stock.Application.Mappers.Mapperly;
 using Stock.Application.Validators.FluentValidation;
+using Stock.Domain.Models.Suppliers;
 using Stock.Infrastructure.Pg.Ef;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddOData(options => options
+    .Select()
+    .Filter()
+    .OrderBy()
+    .Count()
+    .SetMaxTop(100)
+    .AddRouteComponents("odata", GetEdmModel()));
 builder.Services.InstallRepositories(builder.Configuration);
 builder.Services.InstallValidators();
 builder.Services.InstallMappers();
@@ -31,3 +41,10 @@ app.UseMiddleware<RequestResultMiddleware>();
 app.UseMiddleware<AutoSaveChangesMiddleware>();
 app.MapControllers();
 app.Run();
+
+static IEdmModel GetEdmModel()
+{
+    var builder = new ODataConventionModelBuilder();
+    builder.EntitySet<Supplier>("SuppliersOData");
+    return builder.GetEdmModel();
+}
