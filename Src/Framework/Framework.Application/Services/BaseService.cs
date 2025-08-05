@@ -23,13 +23,14 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
 
     # region Create
 
-    public virtual async Task<RequestResult<TResponse>> CreateAsync(TCreateRequest request)
+    public virtual async Task<RequestResult<TResponse>> CreateAsync(TCreateRequest request,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request, nameof(request));
 
         var createRepository = ServiceProvider.GetRequiredService<ICreateRepository<TAggregateRoot>>();
 
-        var validationResult = await ValidateAsync(request);
+        var validationResult = await ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return RequestResult<TResponse>.BadRequest(validationResult);
 
@@ -39,10 +40,10 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
         return RequestResult<TResponse>.Created(ToResponse(added));
     }
 
-    protected virtual Task<ValidationResult> ValidateAsync(TCreateRequest request)
+    protected virtual Task<ValidationResult> ValidateAsync(TCreateRequest request, CancellationToken cancellationToken)
     {
         var createValidator = ServiceProvider.GetRequiredService<IRequestValidator<TCreateRequest>>();
-        return createValidator.ValidateAsync(request);
+        return createValidator.ValidateAsync(request, cancellationToken);
     }
 
     protected virtual TAggregateRoot ToDomain(TCreateRequest request) => Mapper.ToDomain(request);
@@ -52,7 +53,8 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
 
     # region Update
 
-    public virtual async Task<RequestResult<TResponse>> UpdateAsync(TUpdateRequest request)
+    public virtual async Task<RequestResult<TResponse>> UpdateAsync(TUpdateRequest request,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request, nameof(request));
         ArgumentOutOfRangeException.ThrowIfEqual(request.Id, Guid.Empty);
@@ -60,12 +62,11 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
         var readRepository = ServiceProvider.GetRequiredService<IReadRepository<TAggregateRoot>>();
         var updateRepository = ServiceProvider.GetRequiredService<IUpdateRepository<TAggregateRoot>>();
 
-        var validationResult = await ValidateAsync(request);
+        var validationResult = await ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return RequestResult<TResponse>.BadRequest(validationResult);
 
-        //Todo: handle cancellation token
-        var existingAggregateRoot = await readRepository.GetByIdAsync(request.Id, CancellationToken.None);
+        var existingAggregateRoot = await readRepository.GetByIdAsync(request.Id, cancellationToken);
         if (existingAggregateRoot is null)
             return RequestResult<TResponse>.NotFound(typeof(TAggregateRoot).Name, request.Id);
 
@@ -75,10 +76,10 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
         return RequestResult<TResponse>.Ok(ToResponse(updated));
     }
 
-    protected virtual Task<ValidationResult> ValidateAsync(TUpdateRequest request)
+    protected virtual Task<ValidationResult> ValidateAsync(TUpdateRequest request, CancellationToken cancellationToken)
     {
         var updateValidator = ServiceProvider.GetRequiredService<IRequestValidator<TUpdateRequest>>();
-        return updateValidator.ValidateAsync(request);
+        return updateValidator.ValidateAsync(request, cancellationToken);
     }
 
     protected abstract TAggregateRoot UpdateDomain(TUpdateRequest request,
@@ -88,14 +89,13 @@ public abstract class BaseService<TAggregateRoot, TCreateRequest, TUpdateRequest
 
     # region Delete
 
-    public virtual async Task<RequestResult<bool>> DeleteAsync(Guid id)
+    public virtual async Task<RequestResult<bool>> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         ArgumentOutOfRangeException.ThrowIfEqual(id, Guid.Empty);
         var deleteRepository = ServiceProvider.GetRequiredService<IDeleteRepository<TAggregateRoot>>();
         var readRepository = ServiceProvider.GetRequiredService<IReadRepository<TAggregateRoot>>();
 
-        //todo: handle cancellation token
-        var existing = await readRepository.GetByIdAsync(id, CancellationToken.None);
+        var existing = await readRepository.GetByIdAsync(id, cancellationToken);
         if (existing is null)
             return RequestResult<bool>.NotFound(typeof(TAggregateRoot).Name, id);
 

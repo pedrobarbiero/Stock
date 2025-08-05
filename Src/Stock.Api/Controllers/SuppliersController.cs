@@ -13,18 +13,19 @@ public class SuppliersController : ControllerBase
     [HttpPost]
     public Task<RequestResult<SupplierResponse>> Create(
         [FromServices] ISupplierService supplierService,
-        [FromBody] CreateSupplierRequest request)
-        => supplierService.CreateAsync(request);
+        [FromBody] CreateSupplierRequest request,
+        CancellationToken cancellationToken)
+        => supplierService.CreateAsync(request, cancellationToken);
 
     [HttpGet]
     public ActionResult Get()
     {
         return Ok("success");
     }
-    
+
     [HttpPut]
     public Task<RequestResult<SupplierResponse>> Update(
         [FromServices] ISupplierService supplierService,
-        [FromBody] UpdateSupplierRequest request)
-        => supplierService.UpdateAsync(request);
+        [FromBody] UpdateSupplierRequest request, CancellationToken cancellationToken)
+        => supplierService.UpdateAsync(request, cancellationToken);
 }

@@ -7,9 +7,9 @@ public class RequestValidator<TRequest>
     : AbstractValidator<TRequest>, IRequestValidator<TRequest>
     where TRequest : class
 {
-    public async Task<ValidationResult> ValidateAsync(TRequest request)
+    public new async Task<ValidationResult> ValidateAsync(TRequest request, CancellationToken cancellationToken)
     {
-        var result = await base.ValidateAsync(request);
+        var result = await base.ValidateAsync(request, cancellationToken);
 
         if (result.IsValid)
             return ValidationResult.Success();
