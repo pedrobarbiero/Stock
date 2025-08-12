@@ -9,6 +9,7 @@ public abstract class BaseCustomerValidator<T> : RequestValidator<T> where T : B
     protected BaseCustomerValidator()
     {
         RuleFor(x => x.Name)
+            .NotNull()
             .Length(CustomerConstants.MinNameLength, CustomerConstants.MaxNameLength);
 
         RuleFor(x => x.Email)

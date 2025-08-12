@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Stock.Api.GraphQL;
+using Stock.Api.Swagger;
 using Stock.Api.Middleware;
 using Stock.Application;
 using Stock.Application.Mappers.Mapperly;
@@ -28,6 +29,16 @@ builder.Services.InstallApplicationServices();
 builder.Services.InstallGraphQl();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo 
+    { 
+        Title = "Stock API", 
+        Version = "v1",
+        Description = "Stock management API with FluentValidation integration"
+    });
+    c.SchemaFilter<FluentValidationRules>();
+});
 builder.Services.AddSingleton(TimeProvider.System);
 
 var app = builder.Build();
@@ -35,6 +46,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Stock API V1");
+        c.RoutePrefix = "swagger";
+    });
 
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<StockDbContext>();
