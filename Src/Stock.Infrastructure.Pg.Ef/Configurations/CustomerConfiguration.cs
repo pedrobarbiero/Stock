@@ -10,7 +10,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         builder.ToTable("customers");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasValueGenerator<GuidV7ValueGenerator>();
+        builder.Property(x => x.Id).ValueGeneratedNever();
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(CustomerConstants.MaxNameLength);

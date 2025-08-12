@@ -10,7 +10,7 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
     {
         builder.ToTable("suppliers");
         builder.HasKey(s => s.Id);
-        builder.Property(s => s.Id).HasValueGenerator<GuidV7ValueGenerator>();
+        builder.Property(x => x.Id).ValueGeneratedNever();
 
         builder.Property(s => s.Name)
             .IsRequired()
