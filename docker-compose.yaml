@@ -1,7 +1,27 @@
 ﻿services:
+  postgres:
+    image: postgres:15
+    container_name: stock-postgres
+    environment:
+      POSTGRES_DB: stockdb
+      POSTGRES_USER: stockuser
+      POSTGRES_PASSWORD: stockpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   stock.api:
     image: stock.api
     build:
       context: .
       dockerfile: Src/Stock.Api/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=stockdb;Username=stockuser;Password=stockpassword
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
 
+volumes:
+  postgres_data:
