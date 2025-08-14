@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+
 using Stock.Api.GraphQL;
 using Stock.Api.Swagger;
 using Stock.Api.Middleware;
@@ -11,6 +12,9 @@ using Stock.Application.Validators.FluentValidation;
 using Stock.Domain.Models.Customers;
 using Stock.Domain.Models.Suppliers;
 using Stock.Infrastructure.Pg.Ef;
+using Stock.Infrastructure.BackgroundJobs.Hangfire;
+
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,16 +31,16 @@ builder.Services.InstallValidators();
 builder.Services.InstallMappers();
 builder.Services.InstallApplicationServices();
 builder.Services.InstallGraphQl();
+builder.Services.AddHangfireBackgroundJobs(builder.Configuration.GetConnectionString("HangfireConnection")!);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo 
-    { 
-        Title = "Stock API", 
-        Version = "v1",
-        Description = "Stock management API with FluentValidation integration"
-    });
+    c.SwaggerDoc("v1",
+        new Microsoft.OpenApi.Models.OpenApiInfo
+        {
+            Title = "Stock API", Version = "v1", Description = "Stock management API"
+        });
     c.SchemaFilter<FluentValidationRules>();
 });
 builder.Services.AddSingleton(TimeProvider.System);
@@ -60,6 +64,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<RequestResultMiddleware>();
 app.UseMiddleware<AutoSaveChangesMiddleware>();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseHangfireDashboard("/hangfire");
+}
+
 app.MapControllers();
 app.MapGraphQL();
 app.Run();

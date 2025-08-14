@@ -16,7 +16,11 @@ public static class ServiceCollectionExtensions
             .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
             .UseSimpleAssemblyNameTypeSerializer()
             .UseRecommendedSerializerSettings()
-            .UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString)));
+            .UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString), new PostgreSqlStorageOptions
+            {
+                QueuePollInterval = TimeSpan.FromSeconds(15),
+                SchemaName = "hangfire"
+            }));
 
         services.AddHangfireServer();
 
