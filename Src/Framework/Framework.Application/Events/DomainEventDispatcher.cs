@@ -1,45 +1,32 @@
 using Framework.Domain.Models.DomainEvents;
+using Framework.Application.BackgroundJobs;
 
 namespace Framework.Application.Events;
 
 using System.Collections.Concurrent;
 
-using Microsoft.Extensions.DependencyInjection;
-
-public sealed class DomainEventDispatcher(IServiceProvider serviceProvider) : IDomainEventDispatcher
+public sealed class DomainEventDispatcher(IBackgroundJobScheduler backgroundJobScheduler) : IDomainEventDispatcher
 {
     private static readonly ConcurrentDictionary<Type, Type> HandlerTypeDictionary = new();
     private static readonly ConcurrentDictionary<Type, Type> WrapperTypeDictionary = new();
 
-    public async Task DispatchAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken)
+    public Task DispatchAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken)
     {
         foreach (IDomainEvent domainEvent in domainEvents)
         {
-            using IServiceScope scope = serviceProvider.CreateScope();
-
             Type domainEventType = domainEvent.GetType();
             Type handlerType = HandlerTypeDictionary.GetOrAdd(
                 domainEventType,
                 et => typeof(IDomainEventHandler<>).MakeGenericType(et));
 
-            IEnumerable<object?> handlers = scope.ServiceProvider.GetServices(handlerType);
-
-            foreach (object? handler in handlers)
-            {
-                if (handler is null)
-                {
-                    continue;
-                }
-
-                var handlerWrapper = HandlerWrapper.Create(handler, domainEventType);
-                // Todo: Add background job for retry on failure
-
-                await handlerWrapper.HandleAsync(domainEvent, cancellationToken);
-            }
+            backgroundJobScheduler.Enqueue<BackgroundDomainEventProcessor>(
+                processor => processor.ProcessEventAsync(domainEvent, handlerType, CancellationToken.None));
         }
+        
+        return Task.CompletedTask;
     }
 
-    private abstract class HandlerWrapper
+    public abstract class HandlerWrapper
     {
         public abstract Task HandleAsync(IDomainEvent domainEvent, CancellationToken cancellationToken);
 
@@ -53,7 +40,7 @@ public sealed class DomainEventDispatcher(IServiceProvider serviceProvider) : ID
         }
     }
 
-    private sealed class HandlerWrapper<T>(object handler) : HandlerWrapper where T : IDomainEvent
+    public sealed class HandlerWrapper<T>(object handler) : HandlerWrapper where T : IDomainEvent
     {
         private readonly IDomainEventHandler<T> _handler = (IDomainEventHandler<T>)handler;
 
