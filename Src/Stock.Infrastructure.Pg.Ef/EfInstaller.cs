@@ -17,7 +17,6 @@ public static class EfInstaller
     public static IServiceCollection InstallRepositories(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
-        services.AddScoped<DomainEventInterceptor>();
         services.AddScoped<IDomainEventProcessor, DomainEventBackgroundJob>();
         services.AddScoped<IDomainEventHandlerRegistry, DomainEventHandlerRegistry>();
         services.AddScoped<CustomerUpdatedEventHandler>();
@@ -30,8 +29,6 @@ public static class EfInstaller
 #if DEBUG
             options.EnableSensitiveDataLogging();
 #endif
-            var interceptor = serviceProvider.GetRequiredService<DomainEventInterceptor>();
-            options.AddInterceptors(interceptor);
         });
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
