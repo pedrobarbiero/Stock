@@ -1,3 +1,5 @@
+using Framework.Application;
+
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
@@ -28,6 +30,7 @@ builder.Services.InstallRepositories(builder.Configuration);
 builder.Services.InstallValidators();
 builder.Services.InstallMappers();
 builder.Services.InstallApplicationServices();
+builder.Services.InstallEventDispatcher();
 builder.Services.InstallGraphQl();
 builder.Services.AddBackgroundJobs(builder.Configuration.GetConnectionString("BackgroundJobsConnection")!);
 builder.Services.AddEndpointsApiExplorer();
