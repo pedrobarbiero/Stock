@@ -32,6 +32,7 @@ public sealed class DomainEventDispatcher(IServiceProvider serviceProvider) : ID
                 }
 
                 var handlerWrapper = HandlerWrapper.Create(handler, domainEventType);
+                // Todo: Add background job for retry on failure
 
                 await handlerWrapper.HandleAsync(domainEvent, cancellationToken);
             }
