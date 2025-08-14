@@ -15,14 +15,14 @@ public sealed class DomainEventDispatcher(IServiceProvider serviceProvider) : ID
     {
         foreach (IDomainEvent domainEvent in domainEvents)
         {
-            // using IServiceScope scope = serviceProvider.CreateScope();
+            using IServiceScope scope = serviceProvider.CreateScope();
 
             Type domainEventType = domainEvent.GetType();
             Type handlerType = HandlerTypeDictionary.GetOrAdd(
                 domainEventType,
                 et => typeof(IDomainEventHandler<>).MakeGenericType(et));
 
-            IEnumerable<object?> handlers = serviceProvider.GetServices(handlerType);
+            IEnumerable<object?> handlers = scope.ServiceProvider.GetServices(handlerType);
 
             foreach (object? handler in handlers)
             {
