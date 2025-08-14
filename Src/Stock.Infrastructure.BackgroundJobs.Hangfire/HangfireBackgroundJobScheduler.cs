@@ -23,6 +23,7 @@ public class HangfireBackgroundJobScheduler(IBackgroundJobClient backgroundJobCl
         return Guid.Parse(jobId);
     }
 
+
     public bool Delete(Guid jobId)
     {
         return _backgroundJobClient.Delete(jobId.ToString());
