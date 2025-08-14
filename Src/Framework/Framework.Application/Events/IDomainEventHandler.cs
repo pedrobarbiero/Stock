@@ -2,7 +2,7 @@ using Framework.Domain.Models.DomainEvents;
 
 namespace Framework.Application.Events;
 
-public interface IDomainEventHandler
+public interface IDomainEventHandler<in T> where T : IDomainEvent
 {
-    Task HandleAsync(IDomainEvent domainEvent, CancellationToken cancellationToken);
+    Task HandleAsync(T domainEvent, CancellationToken cancellationToken);
 }

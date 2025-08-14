@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Stock.Infrastructure.Pg.Ef.Domain.Customers;
 using Stock.Infrastructure.Pg.Ef.Domain.Suppliers;
 using Stock.Infrastructure.Pg.Ef.Interceptors;
+using Stock.Infrastructure.Pg.Ef.Events;
 
 namespace Stock.Infrastructure.Pg.Ef;
 
@@ -17,7 +18,9 @@ public static class EfInstaller
     {
         services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
         services.AddScoped<DomainEventInterceptor>();
-        services.AddScoped<IDomainEventHandler, DomainEventBackgroundJob>();
+        services.AddScoped<IDomainEventProcessor, DomainEventBackgroundJob>();
+        services.AddScoped<IDomainEventHandlerRegistry, DomainEventHandlerRegistry>();
+        services.AddScoped<CustomerUpdatedEventHandler>();
 
         services.AddDbContext<StockDbContext>((serviceProvider, options) =>
         {
