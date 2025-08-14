@@ -18,7 +18,7 @@
       dockerfile: Src/Stock.Api/Dockerfile
     environment:
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=stockdb;Username=stockuser;Password=stockpassword
-      - ConnectionStrings__HangfireConnection=Host=postgres;Database=stockdb;Username=stockuser;Password=stockpassword
+      - ConnectionStrings__BackgroundJobsConnection=Host=postgres;Database=stockdb;Username=stockuser;Password=stockpassword
     ports:
       - "80:80"
     depends_on:

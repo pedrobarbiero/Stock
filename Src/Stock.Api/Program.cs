@@ -14,8 +14,6 @@ using Stock.Domain.Models.Suppliers;
 using Stock.Infrastructure.Pg.Ef;
 using Stock.Infrastructure.BackgroundJobs.Hangfire;
 
-using Hangfire;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddOData(options => options
@@ -31,7 +29,7 @@ builder.Services.InstallValidators();
 builder.Services.InstallMappers();
 builder.Services.InstallApplicationServices();
 builder.Services.InstallGraphQl();
-builder.Services.AddHangfireBackgroundJobs(builder.Configuration.GetConnectionString("HangfireConnection")!);
+builder.Services.AddBackgroundJobs(builder.Configuration.GetConnectionString("BackgroundJobsConnection")!);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen(c =>
@@ -64,11 +62,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<RequestResultMiddleware>();
 app.UseMiddleware<AutoSaveChangesMiddleware>();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseHangfireDashboard("/hangfire");
-}
+app.UseBackgroundJobs();
 
 app.MapControllers();
 app.MapGraphQL();

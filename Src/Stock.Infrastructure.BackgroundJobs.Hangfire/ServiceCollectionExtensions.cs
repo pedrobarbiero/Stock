@@ -3,13 +3,15 @@ using Framework.Application.BackgroundJobs;
 using Hangfire;
 using Hangfire.PostgreSql;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Stock.Infrastructure.BackgroundJobs.Hangfire;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddHangfireBackgroundJobs(this IServiceCollection services,
+    public static IServiceCollection AddBackgroundJobs(this IServiceCollection services,
         string connectionString)
     {
         services.AddHangfire(configuration => configuration
@@ -27,5 +29,17 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IBackgroundJobScheduler, HangfireBackgroundJobScheduler>();
 
         return services;
+    }
+
+    public static IApplicationBuilder UseBackgroundJobs(this IApplicationBuilder app)
+    {
+        var environment = app.ApplicationServices.GetRequiredService<IHostEnvironment>();
+        
+        if (environment.IsDevelopment())
+        {
+            app.UseHangfireDashboard("/hangfire");
+        }
+
+        return app;
     }
 }
