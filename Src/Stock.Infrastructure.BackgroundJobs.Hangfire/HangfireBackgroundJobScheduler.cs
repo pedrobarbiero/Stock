@@ -11,21 +11,11 @@ public class HangfireBackgroundJobScheduler(IBackgroundJobClient backgroundJobCl
     private readonly IBackgroundJobClient _backgroundJobClient =
         backgroundJobClient ?? throw new ArgumentNullException(nameof(backgroundJobClient));
 
-    public Guid Enqueue<T>(Expression<Func<T, Task>> methodCall)
-    {
-        var jobId = _backgroundJobClient.Enqueue(methodCall);
-        return Guid.Parse(jobId);
-    }
+    public string? Enqueue<T>(Expression<Func<T, Task>> methodCall)
+        => _backgroundJobClient.Enqueue(methodCall);
 
-    public Guid Schedule<T>(Expression<Func<T, Task>> methodCall, TimeSpan delay)
-    {
-        var jobId = _backgroundJobClient.Schedule(methodCall, delay);
-        return Guid.Parse(jobId);
-    }
+    public string? Schedule<T>(Expression<Func<T, Task>> methodCall, TimeSpan delay) =>
+        _backgroundJobClient.Schedule(methodCall, delay);
 
-
-    public bool Delete(Guid jobId)
-    {
-        return _backgroundJobClient.Delete(jobId.ToString());
-    }
+    public bool Delete(string jobId) => _backgroundJobClient.Delete(jobId);
 }
