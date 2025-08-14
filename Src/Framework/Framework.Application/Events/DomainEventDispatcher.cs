@@ -1,20 +1,64 @@
-using Framework.Application.BackgroundJobs;
 using Framework.Domain.Models.DomainEvents;
 
 namespace Framework.Application.Events;
 
-public class DomainEventDispatcher(IBackgroundJobScheduler jobScheduler) : IDomainEventDispatcher
+using System.Collections.Concurrent;
+
+using Microsoft.Extensions.DependencyInjection;
+
+public sealed class DomainEventDispatcher(IServiceProvider serviceProvider) : IDomainEventDispatcher
 {
-    public Task DispatchAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken)
+    private static readonly ConcurrentDictionary<Type, Type> HandlerTypeDictionary = new();
+    private static readonly ConcurrentDictionary<Type, Type> WrapperTypeDictionary = new();
+
+    public async Task DispatchAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(domainEvents);
-
-        foreach (var domainEvent in domainEvents)
+        foreach (IDomainEvent domainEvent in domainEvents)
         {
-            jobScheduler.Enqueue<IDomainEventProcessor>(processor =>
-                processor.ProcessAsync(domainEvent, cancellationToken));
-        }
+            // using IServiceScope scope = serviceProvider.CreateScope();
 
-        return Task.CompletedTask;
+            Type domainEventType = domainEvent.GetType();
+            Type handlerType = HandlerTypeDictionary.GetOrAdd(
+                domainEventType,
+                et => typeof(IDomainEventHandler<>).MakeGenericType(et));
+
+            IEnumerable<object?> handlers = serviceProvider.GetServices(handlerType);
+
+            foreach (object? handler in handlers)
+            {
+                if (handler is null)
+                {
+                    continue;
+                }
+
+                var handlerWrapper = HandlerWrapper.Create(handler, domainEventType);
+
+                await handlerWrapper.HandleAsync(domainEvent, cancellationToken);
+            }
+        }
+    }
+
+    private abstract class HandlerWrapper
+    {
+        public abstract Task HandleAsync(IDomainEvent domainEvent, CancellationToken cancellationToken);
+
+        public static HandlerWrapper Create(object handler, Type domainEventType)
+        {
+            Type wrapperType = WrapperTypeDictionary.GetOrAdd(
+                domainEventType,
+                et => typeof(HandlerWrapper<>).MakeGenericType(et));
+
+            return (HandlerWrapper)Activator.CreateInstance(wrapperType, handler)!;
+        }
+    }
+
+    private sealed class HandlerWrapper<T>(object handler) : HandlerWrapper where T : IDomainEvent
+    {
+        private readonly IDomainEventHandler<T> _handler = (IDomainEventHandler<T>)handler;
+
+        public override async Task HandleAsync(IDomainEvent domainEvent, CancellationToken cancellationToken)
+        {
+            await _handler.HandleAsync((T)domainEvent, cancellationToken);
+        }
     }
 }
