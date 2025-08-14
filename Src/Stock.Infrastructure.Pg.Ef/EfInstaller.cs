@@ -1,8 +1,9 @@
 using Framework.Application.Repositories;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+
 using Stock.Infrastructure.Pg.Ef.Domain.Customers;
 using Stock.Infrastructure.Pg.Ef.Domain.Suppliers;
 
@@ -15,10 +16,11 @@ public static class EfInstaller
         services.AddDbContext<StockDbContext>(options =>
         {
             options.UseNpgsql(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(StockDbContext).Assembly.FullName))
-                .LogTo(Console.WriteLine, LogLevel.Information);
+                configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly(typeof(StockDbContext).Assembly.FullName));
+#if DEBUG
             options.EnableSensitiveDataLogging();
+#endif
         });
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
